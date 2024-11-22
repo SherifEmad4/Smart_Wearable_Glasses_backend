@@ -15,8 +15,9 @@ class MessageController extends Controller
         return response()->json(Message::all(), 200);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->input('id');
         $message = Message::find($id);
 
         if (!$message) {
@@ -42,8 +43,9 @@ class MessageController extends Controller
         return response()->json($message, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->input('id');
         // Find the message by ID
         $message = Message::find($id);
 
@@ -67,8 +69,9 @@ class MessageController extends Controller
         return response()->json($message, 200);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request )
     {
+        $id = $request->input('id');
         $message = Message::find($id);
 
         if (!$message) {

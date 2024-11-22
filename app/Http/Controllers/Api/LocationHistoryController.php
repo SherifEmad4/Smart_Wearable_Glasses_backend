@@ -14,8 +14,9 @@ class LocationHistoryController extends Controller
         return response()->json(LocationHistory::all(), 200);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->input('id');
         $locationHistory = LocationHistory::find($id);
 
         if (!$locationHistory) {
@@ -37,8 +38,9 @@ class LocationHistoryController extends Controller
         return response()->json($locationHistory, 201);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id = $request->input('id');
         $locationHistory = LocationHistory::find($id);
 
         if (!$locationHistory) {

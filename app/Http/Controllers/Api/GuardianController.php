@@ -16,9 +16,10 @@ class GuardianController extends Controller
      }
 
      // Fetch a specific guardian by ID
-     public function show($id)
+     public function show(Request $request)
      {
-         $guardian = Guardian::find($id);
+        $id = $request->input('id');
+        $guardian = Guardian::find($id);
 
          if (!$guardian) {
              return response()->json(['message' => 'Guardian not found'], 404);
@@ -50,15 +51,16 @@ class GuardianController extends Controller
      }
 
      // Update an existing guardian
-     public function update(Request $request, $id)
+     public function update(Request $request)
      {
+        $id = $request->input('id');
          // Find the guardian by ID
          $guardian = Guardian::find($id);
 
          if (!$guardian) {
              return response()->json(['message' => 'Guardian not found'], 404);
          }
-         
+
          // Validate the request data
         $request->validate([
             'name' => 'sometimes|required|string',

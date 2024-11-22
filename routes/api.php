@@ -51,7 +51,33 @@ Route::prefix('')->group(function () {
 
     // Feedback Routes
     Route::resource('feedbacks', FeedbackController::class);
-    
+
     // Feature Routes
     Route::resource('features', FeatureController::class);
 });
+Route::get('user',[UserController::class , 'show']);
+Route::put('users',[UserController::class , 'update']);
+Route::delete('users',[UserController::class , 'destroy']);
+
+Route::get('feature',[FeatureController::class , 'show']);
+Route::put('features',[FeatureController::class , 'update']);
+Route::delete('features',[FeatureController::class , 'destroy']);
+
+Route::get('setting',[SettingController::class , 'show']);
+Route::put('settings',[SettingController::class , 'update']);
+Route::delete('settings',[SettingController::class , 'destroy']);
+
+Route::get('location',[LocationController::class , 'show']);
+Route::put('locations',[LocationController::class , 'update']);
+Route::delete('locations',[LocationController::class , 'destroy']);
+
+Route::get('location-history',[LocationHistoryController::class , 'show']);
+Route::delete('location-histories',[LocationHistoryController::class , 'destroy']);
+
+Route::get('message',[MessageController::class , 'show']);
+Route::put('messages',[MessageController::class , 'update']);
+Route::delete('messages',[MessageController::class , 'destroy']);
+
+Route::get('feedback',[FeedbackController::class , 'show']);
+Route::put('feedbacks',[FeedbackController::class , 'update']);
+Route::delete('feedbacks',[FeedbackController::class , 'destroy']);

@@ -14,8 +14,9 @@ class FeatureController extends Controller
         return response()->json(Feature::all(), 200);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->input('id');
         $feature = Feature::find($id);
 
         if (!$feature) {
@@ -37,8 +38,9 @@ class FeatureController extends Controller
         return response()->json($feature, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->input('id');
         $feature = Feature::find($id);
 
         if (!$feature) {
@@ -50,8 +52,9 @@ class FeatureController extends Controller
         return response()->json($feature, 200);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id = $request->input('id');
         $feature = Feature::find($id);
 
         if (!$feature) {

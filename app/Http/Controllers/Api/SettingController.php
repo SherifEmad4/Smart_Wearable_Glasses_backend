@@ -14,8 +14,9 @@ class SettingController extends Controller
         return response()->json(Setting::all(), 200);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->input('id');
         $setting = Setting::find($id);
 
         if (!$setting) {
@@ -44,8 +45,9 @@ class SettingController extends Controller
         return response()->json($setting, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->input('id');
         $setting = Setting::find($id);
 
         if (!$setting) {
@@ -57,8 +59,9 @@ class SettingController extends Controller
         return response()->json($setting, 200);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id = $request->input('id');
         $setting = Setting::find($id);
 
         if (!$setting) {

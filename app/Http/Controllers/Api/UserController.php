@@ -17,8 +17,9 @@ class UserController extends Controller
      }
 
      // Fetch a specific user by ID
-     public function show($id)
+     public function show(Request $request)
      {
+        $id = $request->input('id');
          $user = User::find($id);
 
          if (!$user) {
@@ -55,8 +56,9 @@ class UserController extends Controller
      }
 
      // Update an existing user
-     public function update(Request $request, $id)
+     public function update(Request $request)
     {
+        $id = $request->input('id');
     // Find the user by ID
         $user = User::find($id);
 
@@ -107,8 +109,9 @@ class UserController extends Controller
 
 
      // Delete a user
-     public function destroy($id)
+     public function destroy(Request $request)
      {
+        $id = $request->input('id');
          $user = User::find($id);
 
          if (!$user) {

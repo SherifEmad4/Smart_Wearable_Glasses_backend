@@ -14,8 +14,9 @@ class LocationController extends Controller
         return response()->json(Location::all(), 200);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->input('id');
         $location = Location::find($id);
 
         if (!$location) {
@@ -42,8 +43,9 @@ class LocationController extends Controller
         return response()->json($location, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->input('id');
         $location = Location::find($id);
 
         if (!$location) {
@@ -55,8 +57,9 @@ class LocationController extends Controller
         return response()->json($location, 200);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id = $request->input('id');
         $location = Location::find($id);
 
         if (!$location) {
