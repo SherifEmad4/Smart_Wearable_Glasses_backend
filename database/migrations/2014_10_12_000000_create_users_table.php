@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('gender', ['male', 'female']);
             $table->enum('role', ['user', 'admin','guardian']);
+            $table->unsignedBigInteger('guardian_id')->nullable();
+            $table->foreign('guardian_id')->references('id')->on('users')->onDelete('set null');
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();

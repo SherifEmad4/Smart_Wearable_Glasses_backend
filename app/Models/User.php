@@ -49,6 +49,18 @@ class User extends Authenticatable
     ];
 
     // Relationships
+    
+    // Define the "guardian" relationship
+    public function guardian()
+    {
+        return $this->belongsTo(User::class, 'guardian_id');
+    }
+
+    // Define the "user" relationship for a guardian
+    public function ward()
+    {
+        return $this->hasOne(User::class, 'guardian_id');
+    }
     public function settings()
     {
         return $this->hasOne(Setting::class);
