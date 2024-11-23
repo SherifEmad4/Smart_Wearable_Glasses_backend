@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\FeedbackController;
-use App\Http\Controllers\Api\GuardianController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\LocationHistoryController;
@@ -30,9 +29,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('')->group(function () {
     // User Routes
     Route::resource('users', UserController::class);
-
-    // Guardian Routes
-    Route::resource('guardians', GuardianController::class);
 
     // Setting Routes
     Route::resource('settings', SettingController::class);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class MessageController extends Controller
@@ -30,8 +31,12 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'guardian_id' => 'required|integer|exists:guardians,id',
+            'user_id' => ['required',
+                            'integer',
+                            Rule::exists('users', 'id')->where('role', 'user'),],
+            'guardian_id' => ['required',
+                                'integer',
+                                Rule::exists('users', 'id')->where('role', 'guardian')],
             'location_id' => 'required|integer|exists:locations,id',
             'text' => 'required|string',
             'sent_at' => 'sometimes|required|date',
@@ -55,10 +60,14 @@ class MessageController extends Controller
 
         // Validate the input data for updating
         $request->validate([
-            'user_id' => 'sometimes|required|integer|exists:users,id',
-            'guardian_id' => 'sometimes|required|integer|exists:guardians,id',
-            'location_id' => 'sometimes|required|integer|exists:locations,id',
-            'text' => 'sometimes|required|string',
+            'user_id' => ['required',
+                            'integer',
+                            Rule::exists('users', 'id')->where('role', 'user'),],
+            'guardian_id' => ['required',
+                                'integer',
+                                Rule::exists('users', 'id')->where('role', 'guardian')],
+            'location_id' => 'required|integer|exists:locations,id',
+            'text' => 'required|string',
             'sent_at' => 'sometimes|required|date',
             'is_sent' => 'sometimes|required|boolean',
         ]);

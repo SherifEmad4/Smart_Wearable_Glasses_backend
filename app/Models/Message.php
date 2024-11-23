@@ -23,12 +23,12 @@ class Message extends Model
      // Relationships
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id')->where('role', 'user');
     }
 
     public function guardian()
     {
-        return $this->belongsTo(Guardian::class);
+        return $this->belongsTo(User::class, 'guardian_id')->where('role', 'guardian');
     }
 
     public function location()
