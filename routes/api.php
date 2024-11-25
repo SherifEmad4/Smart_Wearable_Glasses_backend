@@ -77,3 +77,6 @@ Route::delete('messages',[MessageController::class , 'destroy']);
 Route::get('feedback',[FeedbackController::class , 'show']);
 Route::put('feedbacks',[FeedbackController::class , 'update']);
 Route::delete('feedbacks',[FeedbackController::class , 'destroy']);
+
+Route::get('image',[ImageController::class, 'show']);
+Route::delete('images',[ImageController::class, 'destroy']);

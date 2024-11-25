@@ -14,8 +14,9 @@ class ImageController extends Controller
         return response()->json(Image::all(), 200);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->input('id');
         $image = Image::find($id);
 
         if (!$image) {
@@ -28,21 +29,22 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer',
-            'image' => 'required|image',
+            'user_id' => 'required|integer|exists:users,id',
+            'image' => ['required','image','mimes:png,jpg,jpeg','max:2048'],
         ]);
 
-        $path = $request->file('image')->store('images');
+        $path = $request->file('image')->store('public');
         $image = Image::create([
             'user_id' => $request->user_id,
             'image' => $path,
         ]);
 
-        return response()->json($image, 201);
+        return response()->json(['message' => 'Image uploaded successfully', 'path' => $path], 201);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id = $request->input('id');
         $image = Image::find($id);
 
         if (!$image) {
