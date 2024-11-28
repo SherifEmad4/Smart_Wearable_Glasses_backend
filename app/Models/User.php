@@ -49,11 +49,17 @@ class User extends Authenticatable
     ];
 
     // Relationships
-    
-    // Define the "guardian" relationship
-    public function guardian()
+
+    // Guardians assigned to this user
+    public function guardians()
     {
-        return $this->belongsTo(User::class, 'guardian_id');
+        return $this->hasMany(UserGuardian::class, 'user_id');
+    }
+
+    // Users assigned to this guardian
+    public function users()
+    {
+        return $this->hasMany(UserGuardian::class, 'guardian_id');
     }
 
     // Define the "user" relationship for a guardian
@@ -83,7 +89,9 @@ class User extends Authenticatable
 
     public function guardianmessages()
     {
-    return $this->hasMany(Message::class, 'guardian_id');
+        return $this->hasMany(Message::class, 'user_id')->whereHas('user', function ($query) {
+            $query->where('role', 'guardian');
+        });
     }
 
     public function images()
