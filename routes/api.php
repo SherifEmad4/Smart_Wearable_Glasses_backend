@@ -8,8 +8,10 @@ use App\Http\Controllers\Api\LocationHistoryController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserGuardianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,3 +82,10 @@ Route::delete('feedbacks',[FeedbackController::class , 'destroy']);
 
 Route::get('image',[ImageController::class, 'show']);
 Route::delete('images',[ImageController::class, 'destroy']);
+
+Route::get('user-guardians', [UserGuardianController::class, 'index']);
+Route::post('user-guardians', [UserGuardianController::class, 'store']);
+Route::get('user-guardian', [UserGuardianController::class, 'show']);
+Route::put('user-guardians', [UserGuardianController::class, 'update']);
+Route::delete('user-guardians', [UserGuardianController::class, 'destroy']);
+
