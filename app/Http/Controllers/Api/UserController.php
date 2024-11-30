@@ -38,7 +38,7 @@ class UserController extends Controller
              'email' => 'required|string|email|unique:users,email',
              'password' => 'required|string|min:6',
              'gender' => 'required|in:male,female',
-             'role' => 'required|in:user,admin',
+             'role' => 'required|in:user,admin,guardian',
              'is_active' => 'required|boolean',
          ]);
 

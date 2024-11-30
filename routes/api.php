@@ -24,68 +24,121 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware('isAdmin')->group(function () {
+    // # Users Routes #
+    Route::get('users',[UserController::class, 'index'])->middleware('isAdmin');
+    Route::post('users',[UserController::class, 'store']);
+    Route::get('user',[UserController::class , 'show']);
+    Route::put('users',[UserController::class , 'update']);
+    Route::delete('users',[UserController::class , 'destroy']);
+
+    // # Settings Routes
+    Route::get('settings',[SettingController::class, 'index']);
+    Route::delete('settings',[SettingController::class , 'destroy']);
+
+    // # Locations Routes #
+    Route::get('locations',[LocationController::class, 'index']);
+    Route::put('locations',[LocationController::class , 'update']);
+    Route::delete('locations',[LocationController::class , 'destroy']);
+
+    // # Location History Routes #
+    Route::get('location-histories',[LocationHistoryController::class, 'index']);
+    Route::delete('location-histories',[LocationHistoryController::class , 'destroy']);
+
+    // # Messages Routes #
+    Route::get('messages',[MessageController::class, 'index']);
+    Route::post('messages',[MessageController::class, 'store']);
+    Route::get('message',[MessageController::class , 'show']);
+    Route::put('messages',[MessageController::class , 'update']);
+    Route::delete('messages',[MessageController::class , 'destroy']);
+
+    // # Images Routes #
+    Route::get('images',[ImageController::class, 'index']);
+    Route::delete('images',[ImageController::class, 'destroy']);
+
+    // # FeedBack Routes #
+    Route::get('feedbacks',[FeedbackController::class, 'index']);
+    Route::get('feedback',[FeedbackController::class , 'show']);
+    Route::put('feedbacks',[FeedbackController::class , 'update']);
+    Route::delete('feedbacks',[FeedbackController::class , 'destroy']);
+
+    // # Features Routes #
+    Route::get('features',[FeatureController::class, 'index']);
+    Route::post('features',[FeatureController::class, 'store']);
+    Route::get('feature',[FeatureController::class , 'show']);
+    Route::put('features',[FeatureController::class , 'update']);
+    Route::delete('features',[FeatureController::class , 'destroy']);
+
+    // # User Guardians Routes #
+    Route::get('user-guardians', [UserGuardianController::class, 'index']);
+    Route::post('user-guardians', [UserGuardianController::class, 'store']);
+    Route::get('user-guardian', [UserGuardianController::class, 'show']);
+    Route::put('user-guardians', [UserGuardianController::class, 'update']);
+    Route::delete('user-guardians', [UserGuardianController::class, 'destroy']);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('')->group(function () {
-    // User Routes
-    Route::resource('users', UserController::class);
+// Route::prefix('')->group(function () {
+//     // User Routes
+//     Route::resource('users', UserController::class);
 
-    // Setting Routes
-    Route::resource('settings', SettingController::class);
+//     // Setting Routes
+//     Route::resource('settings', SettingController::class);
 
-    // Location Routes
-    Route::resource('locations', LocationController::class);
+//     // Location Routes
+//     Route::resource('locations', LocationController::class);
 
-    // LocationHistory Routes
-    Route::resource('location-histories', LocationHistoryController::class);
+//     // LocationHistory Routes
+//     Route::resource('location-histories', LocationHistoryController::class);
 
-    // Message Routes
-    Route::resource('messages', MessageController::class);
+//     // Message Routes
+//     Route::resource('messages', MessageController::class);
 
-    // Image Routes
-    Route::resource('images', ImageController::class);
+//     // Image Routes
+//     Route::resource('images', ImageController::class);
 
-    // Feedback Routes
-    Route::resource('feedbacks', FeedbackController::class);
+//     // Feedback Routes
+//     Route::resource('feedbacks', FeedbackController::class);
 
-    // Feature Routes
-    Route::resource('features', FeatureController::class);
-});
-Route::get('user',[UserController::class , 'show']);
-Route::put('users',[UserController::class , 'update']);
-Route::delete('users',[UserController::class , 'destroy']);
+//     // Feature Routes
+//     Route::resource('features', FeatureController::class);
+// });
 
-Route::get('feature',[FeatureController::class , 'show']);
-Route::put('features',[FeatureController::class , 'update']);
-Route::delete('features',[FeatureController::class , 'destroy']);
 
+
+// # Features Routes #
+
+
+// # Settings Routes #
+Route::post('settings',[SettingController::class, 'store']);
 Route::get('setting',[SettingController::class , 'show']);
 Route::put('settings',[SettingController::class , 'update']);
-Route::delete('settings',[SettingController::class , 'destroy']);
 
+
+// # Locations Routes #
+Route::post('locations',[LocationController::class, 'store']);
 Route::get('location',[LocationController::class , 'show']);
-Route::put('locations',[LocationController::class , 'update']);
-Route::delete('locations',[LocationController::class , 'destroy']);
 
+
+// # Location History Routes #
+Route::post('location-histories',[LocationHistoryController::class, 'store']);
 Route::get('location-history',[LocationHistoryController::class , 'show']);
-Route::delete('location-histories',[LocationHistoryController::class , 'destroy']);
 
-Route::get('message',[MessageController::class , 'show']);
-Route::put('messages',[MessageController::class , 'update']);
-Route::delete('messages',[MessageController::class , 'destroy']);
+// # Messages Routes #
 
-Route::get('feedback',[FeedbackController::class , 'show']);
-Route::put('feedbacks',[FeedbackController::class , 'update']);
-Route::delete('feedbacks',[FeedbackController::class , 'destroy']);
 
+// # FeedBack Routes #
+Route::post('feedbacks',[FeedbackController::class, 'store']);
+
+
+// # Images Routes #
+Route::post('images',[ImageController::class, 'store']);
 Route::get('image',[ImageController::class, 'show']);
-Route::delete('images',[ImageController::class, 'destroy']);
 
-Route::get('user-guardians', [UserGuardianController::class, 'index']);
-Route::post('user-guardians', [UserGuardianController::class, 'store']);
-Route::get('user-guardian', [UserGuardianController::class, 'show']);
-Route::put('user-guardians', [UserGuardianController::class, 'update']);
-Route::delete('user-guardians', [UserGuardianController::class, 'destroy']);
+
+// # User Guardians Routes #
+
 
