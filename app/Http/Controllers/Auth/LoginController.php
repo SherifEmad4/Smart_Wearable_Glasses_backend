@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request; // Correct use of the Laravel Request class
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request; // Correct use of the Laravel Request class
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
@@ -41,28 +42,51 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-{
-    // Get all input data from the request
-    $input = $request->all();
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // Validate the incoming request data
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+        // Attempt to authenticate the user and generate a token
+        if ($token = auth()->attempt($request->only('email', 'password'))) {
+            // Check the user's role after authentication
+            $user = auth()->user();
+            $user->is_active = true ;
+            $user->save();
+            $response = [
+                'message' => 'Login successful',
+                'user' => $user,
+                'token' => $this->createNewToken($token), // Return the JWT token
+            ];
 
-    // Attempt to authenticate the user
-    if (auth()->attempt(['email' => $input['email'], 'password' => $input['password']])) {
-        // If login is successful, check the user's role
-        if (auth()->user()->role == 'admin') {
-            return redirect()->route('admin-home'); // Redirect to admin-home
-        } else {
-            return redirect()->route('home'); // Redirect to home if the user is not an admin
+            if ($user->role === 'admin') {
+                $response['dashboard'] = route('admin-home'); // Optional: Provide admin-specific data
+            }
+
+            return response()->json($response, 200);
         }
+
+        // If authentication fails, return an error response
+        return response()->json(['error' => 'Invalid email or password'], 401);
     }
-
-    // If authentication fails, return an error response
-    return redirect()->route('login')->with('error', 'Input Proper Email Or Password');
-}
-
+    public function createNewToken($token){
+        return response()->json([
+            'access_token'=>$token,
+            'token_type'=>'bearer',
+            'expires_in'=>auth()->factory()->getTTL()*60,
+            'user'=>auth()->user()
+        ]);
+    }
+    public function logout(){
+        $user = Auth::user();
+        // Update 'is_active' to false
+        $user->is_active = false;
+        $user->save();
+        auth()->logout();
+        return response()->json([
+            'message'=>'User Logged Out'
+        ]);
+    }
 }
