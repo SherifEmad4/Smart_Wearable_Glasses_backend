@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\FeedbackController;
@@ -41,6 +41,8 @@ Route::middleware('isAdmin')->group(function () {
     Route::get('user',[UserController::class , 'show']);
     Route::put('users',[UserController::class , 'update']);
     Route::delete('users',[UserController::class , 'destroy']);
+    //Route::middleware(['auth:sanctum', 'isAdmin'])->get('/admin/profile', [LoginController::class, 'profile']);
+
 
     // # Settings Routes
     Route::get('settings',[SettingController::class, 'index']);
@@ -137,7 +139,7 @@ Route::get('location',[LocationController::class , 'show']);
 Route::post('location-histories',[LocationHistoryController::class, 'store']);
 Route::get('location-history',[LocationHistoryController::class , 'show']);
 
-// # Messages Routes #
+# Messages Routes #
 
 
 // # FeedBack Routes #
@@ -150,5 +152,11 @@ Route::get('image',[ImageController::class, 'show']);
 
 
 // # User Guardians Routes #
+//youssef
 
+
+// Route::middleware('auth.jwt')->group(function () {
+//     Route::get('/users', [UserController::class, 'index']);
+//     Route::post('/users/update', [UserController::class, 'update']);
+// });
 

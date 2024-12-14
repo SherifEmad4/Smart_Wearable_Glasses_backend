@@ -6,18 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
+use App\Traits\TokenValidation;  // استيراد التريت
 
 class MessageController extends Controller
 {
-    //
+    use TokenValidation;  // استخدام التريت للتحقق من التوكن
+
     public function index()
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         return response()->json(Message::all(), 200);
     }
 
     public function show(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
         $message = Message::find($id);
 
@@ -30,6 +41,11 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $request->validate([
             'user_id' => ['required',
                             'integer',
@@ -50,15 +66,18 @@ class MessageController extends Controller
 
     public function update(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
-        // Find the message by ID
         $message = Message::find($id);
 
         if (!$message) {
             return response()->json(['message' => 'Message not found'], 404);
         }
 
-        // Validate the input data for updating
         $request->validate([
             'user_id' => ['required',
                             'integer',
@@ -72,14 +91,18 @@ class MessageController extends Controller
             'is_sent' => 'sometimes|required|boolean',
         ]);
 
-        // Update the message with validated data
         $message->update($request->all());
 
         return response()->json($message, 200);
     }
 
-    public function destroy(Request $request )
+    public function destroy(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
         $message = Message::find($id);
 
@@ -92,3 +115,4 @@ class MessageController extends Controller
         return response()->json(['message' => 'Message deleted'], 200);
     }
 }
+

@@ -6,14 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserGuardian;
 use Illuminate\Http\Request;
+use App\Traits\TokenValidation;  // استيراد التريت
 
 class UserGuardianController extends Controller
 {
-     /**
+    use TokenValidation;  // استخدام التريت للتحقق من التوكن
+
+    /**
      * Display a listing of all user-guardian pairs.
      */
     public function index()
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $userGuardians = UserGuardian::with(['user', 'guardian'])->get();
 
         return response()->json($userGuardians);
@@ -24,6 +32,11 @@ class UserGuardianController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'guardian_id' => 'required|exists:users,id',
@@ -57,6 +70,11 @@ class UserGuardianController extends Controller
      */
     public function show(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id  = $request->input('id');
         $userGuardian = UserGuardian::with(['user', 'guardian'])->find($id);
 
@@ -72,6 +90,11 @@ class UserGuardianController extends Controller
      */
     public function update(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
 
         $request->validate([
@@ -105,6 +128,11 @@ class UserGuardianController extends Controller
      */
     public function destroy(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
         $userGuardian = UserGuardian::find($id);
 
@@ -117,3 +145,4 @@ class UserGuardianController extends Controller
         return response()->json(['message' => 'UserGuardian deleted successfully']);
     }
 }
+
