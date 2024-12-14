@@ -3,25 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Traits\TokenValidation; // إضافة التريت هنا
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request; // Correct use of the Laravel Request class
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon; // تأكد من استيراد Carbon
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, TokenValidation; // استخدام التريت هنا
 
     /**
      * Where to redirect users after login.
@@ -41,6 +32,12 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
+    /**
+     * Handle the login request and return the access token.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         // Validate the incoming request data
@@ -53,14 +50,19 @@ class LoginController extends Controller
         if ($token = auth()->attempt($request->only('email', 'password'))) {
             // Check the user's role after authentication
             $user = auth()->user();
-            $user->is_active = true ;
+            $user->is_active = true;
             $user->save();
+
+            // Return response with token and user data
             $response = [
-                'message' => 'Login successful',
-                'user' => $user,
-                'token' => $this->createNewToken($token), // Return the JWT token
+                'user_id' => $user->id ,
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+            
             ];
 
+            // Add additional information for admin users if needed
             if ($user->role === 'admin') {
                 $response['dashboard'] = route('admin-home'); // Optional: Provide admin-specific data
             }
@@ -71,22 +73,77 @@ class LoginController extends Controller
         // If authentication fails, return an error response
         return response()->json(['error' => 'Invalid email or password'], 401);
     }
-    public function createNewToken($token){
+
+    /**
+     * Get the authenticated user's profile.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function profile()
+    {
+        // تحقق من صحة التوكن واسترجع المستخدم
+        $user = $this->validateToken();
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user; // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
+        // التحقق من نوع المستخدم
+        if ($user->role === 'admin') {
+            return response()->json([
+                'message' => 'Admin Profile',
+                'admin' => $user,
+            ]);
+        }
+
         return response()->json([
-            'access_token'=>$token,
-            'token_type'=>'bearer',
-            'expires_in'=>auth()->factory()->getTTL()*60,
-            'user'=>auth()->user()
+            'message' => 'User Profile',
+            'user' => $user,
         ]);
     }
-    public function logout(){
+
+    /**
+     * Logout the user and update 'is_active' to false.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        // تحقق من التوكن قبل تسجيل الخروج
+        $user = $this->validateToken();
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user; // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+    
         $user = Auth::user();
         // Update 'is_active' to false
         $user->is_active = false;
         $user->save();
         auth()->logout();
+    
         return response()->json([
-            'message'=>'User Logged Out'
+            'message' => 'User Logged Out',
+        ]);
+    }
+    
+
+    /**
+     * Create a new token for the authenticated user.
+     *
+     * @param string $token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function createNewToken($token)
+    {
+        $user = auth()->user();
+        $expiresAt = Carbon::now()->addMinutes(auth()->factory()->getTTL());
+
+        return response()->json([
+            'access_token' => $token,
+            'token_id' => $user->id,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_at' => $expiresAt->toDateTimeString(),
         ]);
     }
 }
+

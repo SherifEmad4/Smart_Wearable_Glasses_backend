@@ -6,43 +6,60 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\TokenValidation;  // استيراد التريت
 
 class UserController extends Controller
 {
-    //
-     // Fetch all users
-     public function index()
-     {
-         return response()->json(User::all(), 200);
-     }
+    use TokenValidation;  // استخدام التريت للتحقق من التوكن
 
-     // Fetch a specific user by ID
-     public function show(Request $request)
-     {
+    // Fetch all users
+    public function index()
+    {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
+        return response()->json(User::all(), 200);
+    }
+
+    // Fetch a specific user by ID
+    public function show(Request $request)
+    {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
-         $user = User::find($id);
+        $user = User::find($id);
 
-         if (!$user) {
-             return response()->json(['message' => 'User not found'], 404);
-         }
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-         return response()->json($user, 200);
-     }
+        return response()->json($user, 200);
+    }
 
-     // Create a new user
-     public function store(Request $request)
-     {
-         $request->validate([
-             'name' => 'required|string',
-             'phone' => 'required|string',
-             'email' => 'required|string|email|unique:users,email',
-             'password' => 'required|string|min:6',
-             'gender' => 'required|in:male,female',
-             'role' => 'required|in:user,admin,guardian',
-             'is_active' => 'required|boolean',
-         ]);
+    // Create a new user
+    public function store(Request $request)
+    {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
 
-         $user = User::create([
+        $request->validate([
+            'name' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'gender' => 'required|in:male,female',
+            'role' => 'required|in:user,admin,guardian',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $user = User::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -52,20 +69,24 @@ class UserController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-         return response()->json($user, 201);
-     }
+        return response()->json($user, 201);
+    }
 
-     // Update an existing user
-     public function update(Request $request)
+    // Update an existing user
+    public function update(Request $request)
     {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
+
         $id = $request->input('id');
-    // Find the user by ID
         $user = User::find($id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-        // Validate the request data
+
         $request->validate([
             'name' => 'sometimes|required|string',
             'phone' => 'sometimes|required|string',
@@ -75,7 +96,6 @@ class UserController extends Controller
             'role' => 'sometimes|required|string',
             'is_active' => 'sometimes|required|boolean',
         ]);
-
 
         // Update the user fields explicitly
         if ($request->has('name')) {
@@ -103,23 +123,28 @@ class UserController extends Controller
         // Save the updated user
         $user->save();
 
-        // Return the updated user as a response
         return response()->json($user, 200);
-}
+    }
 
+    // Delete a user
+    public function destroy(Request $request)
+    {
+        $user = $this->validateToken();  // تحقق من التوكن
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+        }
 
-     // Delete a user
-     public function destroy(Request $request)
-     {
         $id = $request->input('id');
-         $user = User::find($id);
+        $user = User::find($id);
 
-         if (!$user) {
-             return response()->json(['message' => 'User not found'], 404);
-         }
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-         $user->delete();
+        $user->delete();
 
-         return response()->json(['message' => 'User deleted'], 200);
-     }
+        return response()->json(['message' => 'User deleted'], 200);
+    }
 }
+
+

@@ -66,13 +66,10 @@ class RegisterController extends Controller
             'role' => $request->role ?? 'user', // Default role is 'user'
         ]);
 
-        // Generate JWT token
-        $token = auth()->login($user);
-
+    
         return response()->json([
             'message' => 'User registered successfully.',
             'user' => $user,
-            'token' => $token,
         ], 201);
 
     }
