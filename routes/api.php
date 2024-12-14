@@ -36,7 +36,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 Route::middleware('isAdmin')->group(function () {
     // # Users Routes #
-    Route::get('users',[UserController::class, 'index'])->middleware('isAdmin');
+    Route::get('users',[UserController::class, 'index']);
     Route::post('users',[UserController::class, 'store']);
     Route::get('user',[UserController::class , 'show']);
     Route::put('users',[UserController::class , 'update']);
