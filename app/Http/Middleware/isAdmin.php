@@ -21,6 +21,7 @@ class isAdmin
         }
 
         // If the user is not an admin, return an unauthorized response
-        return redirect('home')->with('error' , 'You Have No Access');
+        return response()->json(['error' => 'You Are Not Authorized'],  401);
+        // return redirect('home')->with('error' , 'You Have No Access');
     }
 }
