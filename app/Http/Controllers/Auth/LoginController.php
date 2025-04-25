@@ -65,7 +65,7 @@ class LoginController extends Controller
                 'user_id' => $user->id ,
                 'access_token' => $token,
                 'token_type' => 'bearer',
-                'expires_in' => 43200,  // 30 days in minutes
+                'expires_in' => 43200*12,  // 30 days in minutes
                 'expires_at' => Carbon::now()->addDays(30)->toDateTimeString(),
             ];
 
@@ -148,7 +148,7 @@ class LoginController extends Controller
             'access_token' => $token,
             'token_id' => $user->id,
             'token_type' => 'bearer',
-            'expires_in' => 43200,  // 30 days in minutes
+            'expires_in' => 43200*12,  // 30 days in minutes
             'expires_at' => $expiresAt->toDateTimeString(),
         ]);
     }

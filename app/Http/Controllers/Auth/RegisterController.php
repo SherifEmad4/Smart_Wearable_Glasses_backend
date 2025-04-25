@@ -75,7 +75,7 @@ class RegisterController extends Controller
             'user' => $user,
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => 43200,  // 30 days in minutes
+            'expires_in' => 43200*12,  // 30 days in minutes
             'expires_at' => now()->addDays(30)->toDateTimeString(), // Set token expiration to 30 days
         ], 201);
     }
