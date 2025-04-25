@@ -1,4 +1,4 @@
- <?php
+<?php
 
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\FeedbackController;
@@ -14,7 +14,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
+// Route::get('/test-api', function () {
+//     return response()->json(['message' => 'API is working!']);
+// });
 
 
 /*
@@ -27,14 +29,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('auth/register', [RegisterController::class, 'register']);
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
-    Route::post('register', [RegisterController::class, 'register']);
-    Route::post('login', [LoginController::class, 'login']);
+    // Route::post('register', [RegisterController::class, 'register'])->name('register');
+    Route::post('login', [LoginController::class, 'login'])->name('login');
     Route::post('logout', [LoginController::class, 'logout']);
 });
 
-Route::middleware('isAdmin')->group(function () {
+// Route::middleware('isAdmin')->group(function () {
     // # Users Routes #
     Route::get('users',[UserController::class, 'index']);
     Route::post('users',[UserController::class, 'store']);
@@ -87,11 +90,11 @@ Route::middleware('isAdmin')->group(function () {
     Route::get('user-guardian', [UserGuardianController::class, 'show']);
     Route::put('user-guardians', [UserGuardianController::class, 'update']);
     Route::delete('user-guardians', [UserGuardianController::class, 'destroy']);
-});
+// });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // Route::prefix('')->group(function () {
 //     // User Routes

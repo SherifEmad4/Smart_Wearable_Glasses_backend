@@ -45,6 +45,10 @@ return [
             'provider' => 'users',
             'hash'=>false
         ],
+        'default' => [
+            'guard' => 'api',
+            'passwords' => 'users',
+        ],
     ],
 
     /*

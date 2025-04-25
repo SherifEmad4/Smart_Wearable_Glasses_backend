@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+// use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -66,7 +66,7 @@ class RegisterController extends Controller
             'role' => $request->role ?? 'user', // Default role is 'user'
         ]);
 
-    
+
         return response()->json([
             'message' => 'User registered successfully.',
             'user' => $user,

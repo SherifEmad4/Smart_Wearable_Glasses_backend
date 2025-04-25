@@ -46,11 +46,14 @@ class LocationHistoryController extends Controller
         }
 
         $request->validate([
-            'user_id' => 'required|integer',
-            'location_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
+            'location_id' => 'required|integer|exists:locations,id',
         ]);
 
-        $locationHistory = LocationHistory::create($request->all());
+        $locationHistory = LocationHistory::create([
+            "user_id"=>$request->user_id,
+            "location_id"=>$request->location_id,
+        ]);
 
         return response()->json($locationHistory, 201);
     }

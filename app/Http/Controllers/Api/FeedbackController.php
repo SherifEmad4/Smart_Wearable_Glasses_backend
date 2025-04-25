@@ -46,12 +46,16 @@ class FeedbackController extends Controller
         }
 
         $request->validate([
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
             'address' => 'required|string',
             'content' => 'required|string',
         ]);
 
-        $feedback = Feedback::create($request->all());
+        $feedback = Feedback::create([
+            "user_id"=>$request->user_id,
+            "address"=>$request->address,
+            "content"=>$request->content,
+        ]);
 
         return response()->json($feedback, 201);
     }

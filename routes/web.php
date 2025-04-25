@@ -1,7 +1,13 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+
+
 
 
 /*
@@ -23,3 +29,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('admin-home',[App\Http\Controllers\HomeController::class , 'adminHome'])->name('admin-home')->middleware('isAdmin');
+
+// Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+// // Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+// Route::post('login', [LoginController::class, 'login']);
+// Route::post('register', [RegisterController::class, 'register']);

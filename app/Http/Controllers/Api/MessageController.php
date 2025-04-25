@@ -55,8 +55,8 @@ class MessageController extends Controller
                                 Rule::exists('users', 'id')->where('role', 'guardian')],
             'location_id' => 'required|integer|exists:locations,id',
             'text' => 'required|string',
-            'sent_at' => 'sometimes|required|date',
-            'is_sent' => 'sometimes|required|boolean',
+            'sent_at' => 'sometimes|date',
+            'is_sent' => 'sometimes|boolean',
         ]);
 
         $message = Message::create($request->all());
@@ -87,8 +87,8 @@ class MessageController extends Controller
                                 Rule::exists('users', 'id')->where('role', 'guardian')],
             'location_id' => 'required|integer|exists:locations,id',
             'text' => 'required|string',
-            'sent_at' => 'sometimes|required|date',
-            'is_sent' => 'sometimes|required|boolean',
+            'sent_at' => 'sometimes|date',
+            'is_sent' => 'sometimes|boolean',
         ]);
 
         $message->update($request->all());
