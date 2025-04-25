@@ -60,13 +60,13 @@ class LoginController extends Controller
             $user->is_active = true;
             $user->save();
 
-            // Return response with token and user data
-            $response = [
+              // Return response with token and user data
+              $response = [
                 'user_id' => $user->id ,
                 'access_token' => $token,
                 'token_type' => 'bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60,
-
+                'expires_in' => 43200,  // 30 days in minutes
+                'expires_at' => Carbon::now()->addDays(30)->toDateTimeString(),
             ];
 
             // Add additional information for admin users if needed
@@ -142,13 +142,13 @@ class LoginController extends Controller
     protected function createNewToken($token)
     {
         $user = auth()->user();
-        $expiresAt = Carbon::now()->addMinutes(auth()->factory()->getTTL());
+        $expiresAt = Carbon::now()->addDays(30);  // Set token expiration to 30 days from now
 
         return response()->json([
             'access_token' => $token,
             'token_id' => $user->id,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => 43200,  // 30 days in minutes
             'expires_at' => $expiresAt->toDateTimeString(),
         ]);
     }

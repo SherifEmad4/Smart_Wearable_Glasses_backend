@@ -66,11 +66,17 @@ class RegisterController extends Controller
             'role' => $request->role ?? 'user', // Default role is 'user'
         ]);
 
+        // Generate token for the newly registered user
+        $token = JWTAuth::fromUser($user);
 
+        // Return response with the user and token
         return response()->json([
             'message' => 'User registered successfully.',
             'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => 43200,  // 30 days in minutes
+            'expires_at' => now()->addDays(30)->toDateTimeString(), // Set token expiration to 30 days
         ], 201);
-
     }
 }
