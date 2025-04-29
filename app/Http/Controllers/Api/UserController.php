@@ -56,6 +56,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'gender' => 'required|in:male,female',
             'role' => 'required|in:user,admin,guardian',
+            'code' => 'sometimes'|'string',
             'is_active' => 'required|boolean',
         ]);
 
@@ -66,6 +67,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),  // Hash the password
             'gender' => $request->gender,
             'role' => $request->role,
+            'code'=>$request->code,
             'is_active' => $request->is_active,
         ]);
 
@@ -94,6 +96,7 @@ class UserController extends Controller
             'password' => 'sometimes|required|string',
             'gender' => 'sometimes|required|string',
             'role' => 'sometimes|required|string',
+            'code' => 'sometimes|required|string',
             'is_active' => 'sometimes|required|boolean',
         ]);
 
@@ -115,6 +118,9 @@ class UserController extends Controller
         }
         if ($request->has('role')) {
             $user->role = $request->role;
+        }
+        if ($request->has('code')) {
+            $user->code = $request->code;
         }
         if ($request->has('is_active')) {
             $user->is_active = $request->is_active;

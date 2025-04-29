@@ -50,6 +50,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'gender' => ['required', 'in:male,female'],
             'role' => ['required', 'in:user,admin,guardian'],
+            'code'=> ['sometimes'],
         ]);
 
         if ($validator->fails()) {
@@ -64,6 +65,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'gender' => $request->gender,
             'role' => $request->role ?? 'user', // Default role is 'user'
+            'code'=> $request->code,
         ]);
 
         // Generate token for the newly registered user
@@ -76,7 +78,7 @@ class RegisterController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => 43200*12,  // 30 days in minutes
-            'expires_at' => now()->addDays(30)->toDateTimeString(), // Set token expiration to 30 days
+            'expires_at' => now()->addDays(365)->toDateTimeString(), // Set token expiration to 30 days
         ], 201);
     }
 }

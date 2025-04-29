@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\FeedbackController;
+use App\Http\Controllers\Api\GuardianController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\LocationHistoryController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 // Route::get('/test-api', function () {
 //     return response()->json(['message' => 'API is working!']);
@@ -45,6 +47,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::put('users',[UserController::class , 'update']);
     Route::delete('users',[UserController::class , 'destroy']);
     //Route::middleware(['auth:sanctum', 'isAdmin'])->get('/admin/profile', [LoginController::class, 'profile']);
+    Route::post('connect-guardian', [GuardianController::class, 'connectGuardian']);
 
 
     // # Settings Routes
