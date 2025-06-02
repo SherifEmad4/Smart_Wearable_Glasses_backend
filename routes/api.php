@@ -55,13 +55,13 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::delete('settings',[SettingController::class , 'destroy']);
 
     // # Locations Routes #
-    Route::get('locations',[LocationController::class, 'index']);
-    Route::put('locations',[LocationController::class , 'update']);
-    Route::delete('locations',[LocationController::class , 'destroy']);
+    Route::get('get-locations',[LocationController::class, 'index']);
+    Route::put('update-locations',[LocationController::class , 'update']);
+    Route::delete('delete-locations',[LocationController::class , 'destroy']);
 
     // # Location History Routes #
-    Route::get('location-histories',[LocationHistoryController::class, 'index']);
-    Route::delete('location-histories',[LocationHistoryController::class , 'destroy']);
+    Route::get('get-location-histories',[LocationHistoryController::class, 'index']);
+    Route::delete('delete-location-histories',[LocationHistoryController::class , 'destroy']);
 
     // # Messages Routes #
     Route::get('messages',[MessageController::class, 'index']);
@@ -137,13 +137,13 @@ Route::put('settings',[SettingController::class , 'update']);
 
 
 // # Locations Routes #
-Route::post('locations',[LocationController::class, 'store']);
-Route::get('location',[LocationController::class , 'show']);
+Route::post('create-locations',[LocationController::class, 'store']);
+Route::get('get-location',[LocationController::class , 'show']);
 
 
 // # Location History Routes #
-Route::post('location-histories',[LocationHistoryController::class, 'store']);
-Route::get('location-history',[LocationHistoryController::class , 'show']);
+Route::post('create-location-histories',[LocationHistoryController::class, 'store']);
+Route::get('get-location-history',[LocationHistoryController::class , 'show']);
 
 # Messages Routes #
 
