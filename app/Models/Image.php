@@ -12,6 +12,7 @@ class Image extends Model
       // Fillable fields for mass assignment
     protected $fillable = [
         'user_id',
+        'caption',
         'image',
     ];
 

@@ -40,23 +40,29 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;
         }
 
         $request->validate([
             'user_id' => 'required|integer|exists:users,id',
-            'image' => ['required','image','mimes:png,jpg,jpeg','max:2048'],
+            'caption' => 'required|string|max:255',
+            'image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:4096'],
         ]);
 
         $path = $request->file('image')->store('public');
+
         $image = Image::create([
             'user_id' => $request->user_id,
             'image' => $path,
+            'caption' => $request->caption,
         ]);
 
-        return response()->json(['message' => 'Image uploaded successfully', 'path' => $path], 201);
+        return response()->json([
+            'message' => 'Image uploaded successfully',
+            'data' => $image
+        ], 201);
     }
 
     public function destroy(Request $request)
