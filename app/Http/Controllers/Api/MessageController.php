@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Traits\TokenValidation;  // استيراد التريت
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Traits\TokenValidation;  // استيراد التريت
 
 class MessageController extends Controller
 {
@@ -39,20 +40,24 @@ class MessageController extends Controller
         return response()->json($message, 200);
     }
 
-    public function store(Request $request)
+  public function store(Request $request)
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  // 
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;
         }
 
         $request->validate([
-            'user_id' => ['required',
-                            'integer',
-                            Rule::exists('users', 'id')->where('role', 'user'),],
-            'guardian_id' => ['required',
-                                'integer',
-                                Rule::exists('users', 'id')->where('role', 'guardian')],
+            'user_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')->where('role', 'user'),
+            ],
+            'guardian_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')->where('role', 'guardian'),
+            ],
             'location_id' => 'required|integer|exists:locations,id',
             'text' => 'required|string',
             'sent_at' => 'sometimes|date',
@@ -60,6 +65,8 @@ class MessageController extends Controller
         ]);
 
         $message = Message::create($request->all());
+
+        broadcast(new MessageSent($message))->toOthers(); //  broadcast it!
 
         return response()->json($message, 201);
     }

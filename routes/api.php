@@ -55,24 +55,24 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::delete('settings',[SettingController::class , 'destroy']);
 
     // # Locations Routes #
-    Route::get('get-locations',[LocationController::class, 'index']);
-    Route::put('update-locations',[LocationController::class , 'update']);
-    Route::delete('delete-locations',[LocationController::class , 'destroy']);
+    Route::get('location/get-locations',[LocationController::class, 'index']);
+    Route::put('location/update-locations',[LocationController::class , 'update']);
+    Route::delete('location/delete-locations',[LocationController::class , 'destroy']);
 
     // # Location History Routes #
-    Route::get('get-location-histories',[LocationHistoryController::class, 'index']);
-    Route::delete('delete-location-histories',[LocationHistoryController::class , 'destroy']);
+    Route::get('locationhistory/get-location-histories',[LocationHistoryController::class, 'index']);
+    Route::delete('locationhistory/delete-location-histories',[LocationHistoryController::class , 'destroy']);
 
     // # Messages Routes #
-    Route::get('messages',[MessageController::class, 'index']);
-    Route::post('messages',[MessageController::class, 'store']);
-    Route::get('message',[MessageController::class , 'show']);
-    Route::put('messages',[MessageController::class , 'update']);
-    Route::delete('messages',[MessageController::class , 'destroy']);
+    Route::get('get-messages',[MessageController::class, 'index']);
+    Route::post('create-messages',[MessageController::class, 'store']);
+    Route::get('get-message',[MessageController::class , 'show']);
+    Route::put('update-messages',[MessageController::class , 'update']);
+    Route::delete('delete-messages',[MessageController::class , 'destroy']);
 
     // # Images Routes #
-    Route::get('images',[ImageController::class, 'index']);
-    Route::delete('images',[ImageController::class, 'destroy']);
+    Route::get('get-images',[ImageController::class, 'index']);
+    Route::delete('delete-images',[ImageController::class, 'destroy']);
 
     // # FeedBack Routes #
     Route::get('feedbacks',[FeedbackController::class, 'index']);
@@ -137,13 +137,13 @@ Route::put('settings',[SettingController::class , 'update']);
 
 
 // # Locations Routes #
-Route::post('create-locations',[LocationController::class, 'store']);
-Route::get('get-location',[LocationController::class , 'show']);
+Route::post('location/create-locations',[LocationController::class, 'store']);
+Route::get('location/get-location',[LocationController::class , 'show']);
 
 
 // # Location History Routes #
-Route::post('create-location-histories',[LocationHistoryController::class, 'store']);
-Route::get('get-location-history',[LocationHistoryController::class , 'show']);
+Route::post('locationhistory/create-location-histories',[LocationHistoryController::class, 'store']);
+Route::get('locationhistory/get-location-history',[LocationHistoryController::class , 'show']);
 
 # Messages Routes #
 
@@ -153,8 +153,8 @@ Route::post('feedbacks',[FeedbackController::class, 'store']);
 
 
 // # Images Routes #
-Route::post('images',[ImageController::class, 'store']);
-Route::get('image',[ImageController::class, 'show']);
+Route::post('create-images',[ImageController::class, 'store']);
+Route::get('get-image',[ImageController::class, 'show']);
 
 
 // # User Guardians Routes #
