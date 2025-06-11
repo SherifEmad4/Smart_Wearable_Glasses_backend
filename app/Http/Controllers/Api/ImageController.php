@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ImageUploaded;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
-use Illuminate\Http\Request;
 use App\Traits\TokenValidation;  // استيراد التريت
+use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
@@ -58,6 +59,8 @@ class ImageController extends Controller
             'image' => $path,
             'caption' => $request->caption,
         ]);
+
+        broadcast(new ImageUploaded($image))->toOthers();
 
         return response()->json([
             'message' => 'Image uploaded successfully',

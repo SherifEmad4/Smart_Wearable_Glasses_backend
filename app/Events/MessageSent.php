@@ -23,7 +23,7 @@ class MessageSent implements ShouldBroadcast
     public function broadcastOn(): Channel
     {
         return new Channel('smart_wearable_glasses');
-        // Or use: return new PrivateChannel('user.' . $message->guardian_id); for private messages
+        // Or use: return new PrivateChannel('user.' . $message->guardian_id); 
     }
 
     public function broadcastAs(): string

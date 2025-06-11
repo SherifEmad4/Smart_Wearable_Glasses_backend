@@ -17,9 +17,9 @@ class UserGuardianController extends Controller
      */
     public function index()
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;  //
         }
 
         $userGuardians = UserGuardian::with(['user', 'guardian'])->get();
@@ -32,9 +32,9 @@ class UserGuardianController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;  // 
         }
 
         $request->validate([
