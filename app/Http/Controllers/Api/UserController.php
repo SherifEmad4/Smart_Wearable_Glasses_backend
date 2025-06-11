@@ -151,6 +151,60 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User deleted'], 200);
     }
+    
+    public function getGuardedUsers(Request $request)
+    {
+        $authUser = $this->validateToken();
+        if ($authUser instanceof \Illuminate\Http\JsonResponse) {
+            return $authUser;
+        }
+
+        $query = User::whereHas('guardians', function ($q) use ($authUser) {
+            $q->where('guardian_id', $authUser->id);
+        });
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $users = $query->get();
+
+        return response()->json([
+            'message' => 'Guarded users fetched successfully.',
+            'data' => $users
+        ]);
+    }
+
+    public function getUserGuardians(Request $request)
+    {
+        $authUser = $this->validateToken();
+        if ($authUser instanceof \Illuminate\Http\JsonResponse) {
+            return $authUser;
+        }
+
+        $query = User::whereHas('users', function ($q) use ($authUser) {
+            $q->where('user_id', $authUser->id);
+        });
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $guardians = $query->get();
+
+        return response()->json([
+            'message' => 'Guardians fetched successfully.',
+            'data' => $guardians
+        ]);
+    }
 }
 
 
