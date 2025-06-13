@@ -11,13 +11,13 @@ use Illuminate\Validation\Rule;
 
 class MessageController extends Controller
 {
-    use TokenValidation;  // استخدام التريت للتحقق من التوكن
+    use TokenValidation;  //
 
     public function index()
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;  //
         }
 
         return response()->json(Message::all(), 200);
@@ -25,9 +25,9 @@ class MessageController extends Controller
 
     public function show(Request $request)
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;  //
         }
 
         $id = $request->input('id');
@@ -42,7 +42,7 @@ class MessageController extends Controller
 
   public function store(Request $request)
     {
-        $user = $this->validateToken();  // 
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
             return $user;
         }
@@ -66,16 +66,16 @@ class MessageController extends Controller
 
         $message = Message::create($request->all());
 
-        broadcast(new MessageSent($message))->toOthers(); //  broadcast it!
+        broadcast(new MessageSent($message))->toOthers(); //
 
         return response()->json($message, 201);
     }
 
     public function update(Request $request)
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;  //
         }
 
         $id = $request->input('id');
@@ -105,9 +105,9 @@ class MessageController extends Controller
 
     public function destroy(Request $request)
     {
-        $user = $this->validateToken();  // تحقق من التوكن
+        $user = $this->validateToken();  //
         if ($user instanceof \Illuminate\Http\JsonResponse) {
-            return $user;  // إذا كانت هناك مشكلة بالتوكن، نُعيد الاستجابة
+            return $user;  //
         }
 
         $id = $request->input('id');

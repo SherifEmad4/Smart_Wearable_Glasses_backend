@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Image extends Model
 {
@@ -20,6 +21,11 @@ class Image extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return Storage::url($this->image); // Assumes 'image' holds the path like 'images/filename.jpg'
     }
 
 }

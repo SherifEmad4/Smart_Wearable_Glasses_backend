@@ -86,5 +86,27 @@ class ImageController extends Controller
 
         return response()->json(['message' => 'Image deleted'], 200);
     }
+    public function showByPath(Request $request)
+    {
+        $user = $this->validateToken();  // Check the token
+        if ($user instanceof \Illuminate\Http\JsonResponse) {
+            return $user;  // Return error response if token is invalid
+        }
+
+        $path = $request->input('path');  // Expecting 'path' query param
+
+        if (!$path) {
+            return response()->json(['message' => 'Path is required'], 400);
+        }
+
+        // Find the image by its stored path
+        $image = Image::where('image', $path)->first();
+
+        if (!$image) {
+            return response()->json(['message' => 'Image not found'], 404);
+        }
+
+        return response()->json($image, 200);
+    }
 }
 

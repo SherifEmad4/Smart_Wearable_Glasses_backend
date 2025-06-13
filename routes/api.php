@@ -48,7 +48,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::delete('users',[UserController::class , 'destroy']);
     //Route::middleware(['auth:sanctum', 'isAdmin'])->get('/admin/profile', [LoginController::class, 'profile']);
     Route::post('connect-guardian', [GuardianController::class, 'connectGuardian']);
-    
+
     Route::get('guardian/users', [UserController::class, 'getGuardedUsers']);
     Route::get('user/guardians', [UserController::class, 'getUserGuardians']);
 
@@ -74,6 +74,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
     // # Images Routes #
     Route::get('get-images',[ImageController::class, 'index']);
+    Route::get('get-image/path',[ImageController::class, 'showByPath']);
     Route::delete('delete-images',[ImageController::class, 'destroy']);
 
     // # FeedBack Routes #
